@@ -15,20 +15,24 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.time.Duration;
+
 public class PreLoginStepdefs extends BaseComponent {
 
     WebDriver driver = DriverFactory.getDriver();
     ReadConfigFile config = new ReadConfigFile();
+    HomePage homePage = new HomePage();
 
-    @Given("the user is on Evra Home Page")
-    public void theUserIsOnEvraHomePage() {
+    @Given("The user is on Evra Home Page")
+    public void theUserIsOnEvraHomePage() throws InterruptedException {
         String baseUrl = config.getBaseUrl();
         driver.get(baseUrl);
 
-        wait.until(ExpectedConditions.visibilityOf(HomePage.getHomePageHeading()));
+        wait.until(ExpectedConditions.visibilityOf(homePage.getHomePageHeading()));
+        homePage.acceptAllCookiesIfDisplayed();
     }
 
-    @And("the section {string} is displayed on the page")
+    @And("The section {string} is displayed on the page")
     public void theSectionIsDisplayedOnThePage(String sectionPage) {
         Assert.assertTrue(Section.isSectionPageDisplayed(sectionPage));
     }
@@ -41,6 +45,18 @@ public class PreLoginStepdefs extends BaseComponent {
 
     @Then("The user should be redirected to the Sign In with Google page")
     public void iShouldBeRedirectedToTheSignInWithGooglePage() {
-        wait.until(ExpectedConditions.visibilityOf(HomePage.getSignInWithGooglePageTitle()));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(8));//update with check the new url changed or something else
+        wait.until(ExpectedConditions.visibilityOf(homePage.getSignInWithGooglePageTitle()));
     }
+
+    @When("the user sign in with valid Google account credentials")
+    public void theUserSignInWithValidGoogleAccountCredentials() {
+        homePage.enterValidGoogleCredentials();
+    }
+
+    @Then("The user should be redirected to the Evra Dashboard Page")
+    public void theUserShouldBeRedirectedToTheEvraDashboardPage() {
+        wait.until(ExpectedConditions.visibilityOf(homePage.getHomeNavigationMenu()));
+    }
+
 }

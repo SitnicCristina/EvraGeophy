@@ -7,12 +7,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class Button extends BaseComponent {
 
-    private static By buttonLocators = By.cssSelector("button[type='button'], div[role='button']");
+    private static final By buttonLocators = By.cssSelector("button[type='button'], div[role='button'], button[class='button'], .button");
     private WebElement button;
 
     public static WebElement getButtonByText(String buttonText) {
         return driver.findElements(buttonLocators).stream()
-                .filter(element -> element.getText().contains(buttonText))
+                .filter(element -> element.getText().equalsIgnoreCase(buttonText))
                 .findFirst()
                 .orElse(null);
     }

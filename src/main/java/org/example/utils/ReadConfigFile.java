@@ -30,4 +30,16 @@ public class ReadConfigFile {
         return prop.getProperty("BASE_URL");
     }
 
+    public String getGoogleEmail() {
+        if (prop.getProperty("googleEmail") == null)
+            return "";
+        return prop.getProperty("googleEmail");
+    }
+
+    public String getGoogleEmailPass() {
+        if (prop.getProperty("googleEmailPass") == null)
+            return "";
+        return prop.getProperty("googleEmailPass");
+    }
+
 }
