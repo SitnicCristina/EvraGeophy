@@ -1,11 +1,12 @@
-package org.example.page.components;
+package org.example.page.elements;
 
+import org.example.page.components.BaseComponent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class Section extends BaseComponent{
+public class Section extends BaseComponent {
 
     private static By section = By.className("section");
 

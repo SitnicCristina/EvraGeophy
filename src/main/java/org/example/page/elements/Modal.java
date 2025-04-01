@@ -5,14 +5,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
 public class Modal extends BaseComponent {
 
     private static final By shadowRootManager = By.id("transcend-consent-manager");
-    private static final By modalLocators = By.className("modal-container");
-    private static final By modalTitleLocators = By.id("consent-dialog-title");
+    private static final By modalLocators = By.cssSelector(".modal-container, .terms-modal");
+    private static final By modalTitleLocators = By.cssSelector(".text-title, .font-medium");
+    private static final By checkboxLocators = By.cssSelector("input[type='checkbox']");
 
     public static WebElement getShadowModalByTitle(String modalTitle) {
         try {
@@ -43,4 +45,34 @@ public class Modal extends BaseComponent {
         return null;
     }
 
+    public static WebElement getModalByTitle(String modalTitle) {
+        List<WebElement> modals = driver.findElements(modalLocators);
+
+        for (WebElement modal : modals) {
+            WebElement title = modal.findElement(modalTitleLocators);
+
+            if (title.getText().contains(modalTitle)) {
+                return modal;
+            }
+        }
+
+        return null;
+    }
+
+    public static WebElement getModalCheckbox(String checkboxName) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(modalLocators));
+
+        List<WebElement> checkboxes = driver.findElements(checkboxLocators);
+
+        for (WebElement checkbox : checkboxes) {
+            WebElement label = checkbox.findElement(By.xpath("//input[@type='checkbox']/following-sibling::span"));
+            if (label.getText().equalsIgnoreCase(checkboxName)) {
+                return checkbox;
+            }
+        }
+
+        return null;
+    }
+
+    //TO DO  add the modal button method here
 }

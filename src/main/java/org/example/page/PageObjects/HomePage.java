@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.time.Duration;
 import java.util.List;
 
 public class HomePage extends BaseComponent {
@@ -15,6 +16,7 @@ public class HomePage extends BaseComponent {
     private final static By homePageHeading = By.tagName("h1");
     private final static By homeNavigationMenu = By.tagName("h1");
     private final static By signInWithGooglePageTitle = By.xpath("//div[text()='Sign in with Google']");
+    private final static By signUpPageTitle = By.tagName("h2");
     private final static By googleEmailField = By.cssSelector("input[type='email']");
     private final static By googleEmailPassField = By.cssSelector("input[type='email']");
 
@@ -35,6 +37,10 @@ public class HomePage extends BaseComponent {
         return driver.findElement(signInWithGooglePageTitle);
     }
 
+    public WebElement getSignUpPageTitle() {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(signUpPageTitle));
+    }
+
     public void enterValidGoogleCredentials() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(googleEmailField))
                 .sendKeys(config.getGoogleEmail());
@@ -45,6 +51,8 @@ public class HomePage extends BaseComponent {
     }
 
     public void acceptAllCookiesIfDisplayed() {
+        wait.withTimeout(Duration.ofSeconds(10));
+
         WebElement cookieModal = modal.getShadowModalByTitle("WE USE COOKIES");
 
         if (cookieModal != null && cookieModal.isDisplayed()) {

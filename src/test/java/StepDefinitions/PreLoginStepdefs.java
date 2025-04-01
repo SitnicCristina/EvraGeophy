@@ -6,10 +6,10 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.example.page.PageObjects.HomePage;
 import org.example.page.components.BaseComponent;
-import org.example.page.components.Section;
-import org.example.page.elements.Button;
+import org.example.page.elements.*;
 import org.example.utils.DriverFactory;
 import org.example.utils.ReadConfigFile;
+import org.example.utils.StringUtil;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,8 +22,13 @@ public class PreLoginStepdefs extends BaseComponent {
     WebDriver driver = DriverFactory.getDriver();
     ReadConfigFile config = new ReadConfigFile();
     HomePage homePage = new HomePage();
+    Modal modal = new Modal();
+    Link link = new Link();
+    Field field = new Field();
 
-    @Given("The user is on Evra Home Page")
+    private StringUtil stringUtil = new StringUtil();
+
+    @Given("the user is on Evra Home Page")
     public void theUserIsOnEvraHomePage() throws InterruptedException {
         String baseUrl = config.getBaseUrl();
         driver.get(baseUrl);
@@ -32,18 +37,23 @@ public class PreLoginStepdefs extends BaseComponent {
         homePage.acceptAllCookiesIfDisplayed();
     }
 
-    @And("The section {string} is displayed on the page")
+    @And("the section {string} is displayed on the page")
     public void theSectionIsDisplayedOnThePage(String sectionPage) {
         Assert.assertTrue(Section.isSectionPageDisplayed(sectionPage));
     }
 
-    @When("The user clicks on the {string} button")
+    @When("the user clicks on the {string} button")
     public void iClickOnTheButton(String buttonName) {
         WebElement btn = Button.getButtonByText(buttonName);
         wait.until(ExpectedConditions.elementToBeClickable(btn)).click();
     }
 
-    @Then("The user should be redirected to the Sign In with Google page")
+    @When("the user clicks on the {string} button link")
+    public void theUserClicksOnTheButtonLink(String buttonLinkName) {
+        wait.until(ExpectedConditions.elementToBeClickable(link.getLinkByText(buttonLinkName))).click();
+    }
+
+    @Then("the user should be redirected to the Sign In with Google page")
     public void iShouldBeRedirectedToTheSignInWithGooglePage() {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(8));//update with check the new url changed or something else
         wait.until(ExpectedConditions.visibilityOf(homePage.getSignInWithGooglePageTitle()));
@@ -54,9 +64,35 @@ public class PreLoginStepdefs extends BaseComponent {
         homePage.enterValidGoogleCredentials();
     }
 
-    @Then("The user should be redirected to the Evra Dashboard Page")
+    @Then("the user should be redirected to the Evra Dashboard Page")
     public void theUserShouldBeRedirectedToTheEvraDashboardPage() {
         wait.until(ExpectedConditions.visibilityOf(homePage.getHomeNavigationMenu()));
     }
 
+    @Then("the modal with text {string} is visible")
+    public void theModalWithTextIsVisible(String modalName) {
+      Assert.assertTrue(modal.getModalByTitle(modalName).isDisplayed());
+    }
+
+    @And("the user checks the {string} checkbox on the modal")
+    public void theUserChecksTheCheckboxOnTheModal(String checkboxName) {
+        modal.getModalCheckbox(checkboxName).click();
+    }
+
+    @Then("the user should be redirected to the Sign Up page")
+    public void theUserShouldBeRedirectedToTheSignUpPage() {
+        Assert.assertTrue(homePage.getSignUpPageTitle().isDisplayed());
+    }
+
+    @And("the user enters a random string in the {string} field")
+    public void theUserEntersARandomStringInTheField(String fieldName) {
+        WebElement textField = field.getFieldByLabel(fieldName);
+        textField.sendKeys(stringUtil.randomAlphanumeric(8));
+    }
+
+    @And("the user enters {string} in the {string} field")
+    public void theUserEntersInTheField(String inputValue, String fieldName) {
+        WebElement textField = field.getFieldByLabel(fieldName);
+        textField.sendKeys(inputValue);
+    }
 }
