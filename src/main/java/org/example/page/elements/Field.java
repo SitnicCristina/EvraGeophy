@@ -29,4 +29,17 @@ public class Field extends BaseComponent {
 
         return null;
     }
+
+    public WebElement getFieldByPlaceHolder(String placeHolder) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(fielLocators));
+        List<WebElement> fields = driver.findElements(fielLocators);
+
+        for (WebElement field : fields) {
+            if (field.getAttribute("placeholder").trim().contains(placeHolder)) {
+                return field;
+            }
+        }
+
+        return null;
+    }
 }
