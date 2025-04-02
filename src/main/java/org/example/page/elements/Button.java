@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class Button extends BaseComponent {
 
-    private static final By buttonLocators = By.cssSelector("button[type='button'], div[role='button'], button[class='button'], .button");
+    private static final By buttonLocators = By.cssSelector("button[type='button'], div[role='button'], button[class='button'], .button, span[data-test='login-button'], input[class='button']");
     private WebElement button;
 
     public static WebElement getButtonByText(String buttonText) {

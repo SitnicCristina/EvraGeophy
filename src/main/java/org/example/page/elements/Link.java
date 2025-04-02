@@ -7,11 +7,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class Link extends BaseComponent {
 
-    private static final By linkLocators = By.cssSelector("div[data-test='signup-link'], a");
+    private static final By linkLocators = By.cssSelector("div[data-test='signup-link'], a[data-test='view-sample-property'], a");
 
     private WebElement link;
 
     public static WebElement getLinkByText(String linkText) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(linkLocators));
         return driver.findElements(linkLocators).stream()
                 .filter(element -> element.getText().equalsIgnoreCase(linkText))
                 .findFirst()

@@ -20,11 +20,11 @@ Feature: PreLogin functionality
   Scenario: Signing up with email - Register a new user
     Given the user is on Evra Home Page
     And the section "Welcome to Evra" is displayed on the page
-    When the user clicks on the "Sign up with email" button link
+    When the user clicks on the "Sign up with email" link
     Then the modal with text "Terms & Conditions" is visible
     And the user checks the "I agree to the terms and conditions and privacy policy." checkbox on the modal
     When the user clicks on the "Accept" button
-    Then the user should be redirected to the Sign Up page
+    Then the user should be redirected to the "Sign Up" page
     And the user enters a random string in the "First name" field
     And the user enters a random string in the "Last name" field
     And the user enters "test.evra.geothy@gmail.com" in the "Email" field

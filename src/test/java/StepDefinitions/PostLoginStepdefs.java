@@ -1,28 +1,30 @@
 package StepDefinitions;
 
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.example.page.PageObjects.PropertyDueDiligence;
 import org.example.page.components.BaseComponent;
-import org.example.page.elements.Button;
 import org.example.page.elements.Field;
-import org.openqa.selenium.WebElement;
+import org.junit.Assert;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import static org.example.utils.DriverFactory.waitForPageToLoad;
 
 public class PostLoginStepdefs extends BaseComponent {
 
     Field field = new Field();
+    PropertyDueDiligence propertyDueDiligence = new PropertyDueDiligence();
 
-    @When("the user enters {string} in the field with placeholder {string}")
-    public void theUserEntersInTheSearchPropertySearchField(String searchPropertyValue, String placeHolder) {
-        field.getFieldByPlaceHolder(placeHolder).sendKeys(searchPropertyValue);
+    @When("the user enters {string} in the field with {string} placeholder")
+    public void  theUserEntersInTheSearchPropertySearchField(String searchPropertyValue, String placeHolder) {
+        wait.until(ExpectedConditions.visibilityOf(field.getFieldByPlaceHolder(placeHolder))).sendKeys(searchPropertyValue);
+        Assert.assertTrue(field.getFieldByPlaceHolder(placeHolder).isDisplayed());
     }
 
-    @And("the user selects first suggestion from the search results")
-    public void theUserSelectsFirstSuggestionFromTheSearchResults() {
+    @Then("the user should be able to see the {string} panel")
+    public void theUserShouldBeAbleToSeeThePanel(String panelName) {
+        Assert.assertTrue(propertyDueDiligence.getPanel().getText().toLowerCase().contains(panelName.toLowerCase()));
     }
 
-    @Then("the user should be redirected to the Evra Analysis page")
-    public void theUserShouldBeRedirectedToTheEvraAnalysisPage() {
 
-    }
 }

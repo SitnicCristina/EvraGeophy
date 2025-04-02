@@ -48,14 +48,14 @@ public class PreLoginStepdefs extends BaseComponent {
         wait.until(ExpectedConditions.elementToBeClickable(btn)).click();
     }
 
-    @When("the user clicks on the {string} button link")
+    @When("the user clicks on the {string} link")
     public void theUserClicksOnTheButtonLink(String buttonLinkName) {
         wait.until(ExpectedConditions.elementToBeClickable(link.getLinkByText(buttonLinkName))).click();
     }
 
     @Then("the user should be redirected to the Sign In with Google page")
     public void iShouldBeRedirectedToTheSignInWithGooglePage() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(8));//update with check the new url changed or something else
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(13));
         wait.until(ExpectedConditions.visibilityOf(homePage.getSignInWithGooglePageTitle()));
     }
 
@@ -66,7 +66,7 @@ public class PreLoginStepdefs extends BaseComponent {
 
     @Then("the user should be redirected to the Evra Dashboard Page")
     public void theUserShouldBeRedirectedToTheEvraDashboardPage() {
-        wait.until(ExpectedConditions.visibilityOf(homePage.getHomeNavigationMenu()));
+        Assert.assertTrue(homePage.getHomeNavigationMenu().isDisplayed());
     }
 
     @Then("the modal with text {string} is visible")
@@ -79,11 +79,6 @@ public class PreLoginStepdefs extends BaseComponent {
         modal.getModalCheckbox(checkboxName).click();
     }
 
-    @Then("the user should be redirected to the Sign Up page")
-    public void theUserShouldBeRedirectedToTheSignUpPage() {
-        Assert.assertTrue(homePage.getSignUpPageTitle().isDisplayed());
-    }
-
     @And("the user enters a random string in the {string} field")
     public void theUserEntersARandomStringInTheField(String fieldName) {
         WebElement textField = field.getFieldByLabel(fieldName);
@@ -94,5 +89,15 @@ public class PreLoginStepdefs extends BaseComponent {
     public void theUserEntersInTheField(String inputValue, String fieldName) {
         WebElement textField = field.getFieldByLabel(fieldName);
         textField.sendKeys(inputValue);
+    }
+
+    @And("the user should be redirected to the {string} page")
+    public void theUserShouldBeRedirectedToThePage(String pageName) {
+        Assert.assertTrue(homePage.getSignPageTitle().getText().equalsIgnoreCase(pageName));
+    }
+
+    @And("the user sign in with valid Evra credentials")
+    public void theUserSignInWithValidEvraCredentials() {
+        homePage.enterValidEvraCredentials();
     }
 }

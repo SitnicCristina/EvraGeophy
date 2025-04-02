@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Field extends BaseComponent {
 
-    public static final By fielLocators = By.cssSelector("input[type='text']");
+    public static final By fielLocators = By.cssSelector("input[type='text'], input");
 
     public static void enterText(String text) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(fielLocators));
