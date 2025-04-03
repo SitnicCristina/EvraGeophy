@@ -18,6 +18,13 @@ public class ReadConfigFile {
         }
     }
 
+    public String getProperty(String key) {
+        if (prop.getProperty(key) == null)
+            return "";
+        return prop.getProperty(key);
+    }
+
+
     public String getBrowser() {
         if (prop.getProperty("browser") == null)
             return "";

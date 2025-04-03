@@ -8,8 +8,6 @@ import org.example.page.elements.Field;
 import org.junit.Assert;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import static org.example.utils.DriverFactory.waitForPageToLoad;
-
 public class PostLoginStepdefs extends BaseComponent {
 
     Field field = new Field();
